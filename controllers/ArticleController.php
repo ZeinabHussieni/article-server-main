@@ -117,5 +117,3 @@ class ArticleController extends BaseController {
 
 
 
-//1- Try/Catch in controllers ONLY!!! 
-//2- Find a way to remove the hard coded response code (from ResponseService.php)

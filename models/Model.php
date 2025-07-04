@@ -48,6 +48,51 @@ abstract class Model{
 
         return $objects; //we are returning an array of objects!!!!!!!!
     }
+        //2- create() -> static function
+    public static function create(mysqli $mysqli, array $data): bool {
+        $columns = implode(", ", array_keys($data));
+        $placeholders = implode(", ", array_fill(0, count($data), "?"));
+     
+        $sql = "Insert INTO " . static::$table . " ($columns) VALUES ($placeholders)";
+        $stmt = $mysqli->prepare($sql);
+
+        if (!$stmt) {
+          throw new Exception("Prepare Failed: " . $mysqli->error);
+        }
+
+        $types = str_repeat("s", count($data)); 
+        $stmt->bind_param($types, ...array_values($data));
+
+        if (!$stmt->execute()) {
+          throw new Exception("Execute Failed: " . $stmt->error);
+        }
+
+        return true;
+    }
+
+        //update() -> non-static function 
+    public function update(mysqli $mysqli, array $data): bool {
+       $set = implode(", ", array_map(fn($key) => "$key = ?", array_keys($data)));
+       $sql = "Update " . static::$table . " SET $set WHERE " . static::$primary_key . " = ?";
+
+       $stmt = $mysqli->prepare($sql);
+       if (!$stmt) {
+        throw new Exception("Prepare Failed: " . $mysqli->error);
+        }
+
+       $types = str_repeat("s", count($data)) . "i"; //always last one is id 
+       $values = array_values($data);
+       $values[] = $this->{static::$primary_key};
+
+       $stmt->bind_param($types, ...$values);
+
+      if (!$stmt->execute()) {
+      throw new Exception("Execute Failed: " . $stmt->error);
+      }
+
+      return true;
+    }
+
 
     //3- delete() -> static function 
     public static function Delete(mysqli $mysqli, $id):bool{

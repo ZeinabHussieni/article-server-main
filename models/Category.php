@@ -38,42 +38,6 @@ class Category extends Model{
     public function toArray(){
         return [$this->id, $this->name, $this->description];
     }
-    // update() -> non-static function 
-    public function updatecategory(mysqli $mysql, $name, $description) : bool {
-        $sql=sprintf("update %s set name = ?, description = ? WHERE id = ?", static::$table);
-
-        $query= $mysql-> prepare($sql);
-
-        if(!$query){
-            throw new Exception("Prepare Failed: ".$mysql->error);
-        }
-
-        $query->bind_param("ssi", $name, $description, $this->id);
-        $res= $query->execute();
-
-        if(!$res){
-            throw new Exception("Execute Failed: ".$mysql->error);
-        }
-
-        $this->name = $name;
-        $this->description= $description;
-        return true;
-    }
-    // create() -> static function
-    public static function createcategory(mysqli $mysqli, string $name, string $description): bool {
-        $sql = sprintf("insert into %s (name, description) VALUES (?,?)", static::$table);
-
-        $stmt = $mysqli->prepare($sql);
-        if(!$stmt){
-            throw new Exception("Prepare Failed: ".$mysqli->error);
-        }
-
-        $stmt->bind_param("ss", $name, $description);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Execute Failed: ".$stmt->error);
-        }
-        return true;
-    }
+  
 
 }

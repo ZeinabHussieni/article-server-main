@@ -48,44 +48,6 @@ class Article extends Model{
     public function toArray(){
         return [$this->id, $this->name, $this->author, $this->description];
     }
-
-    //update() -> non-static function 
-    public function update(mysqli $mysqli, $name, $author, $description) : bool {
-        $sql = sprintf("Update %s SET name = ?, author = ?, description = ? Where id = ?", static::$table);
-        $query = $mysqli->prepare($sql);
-
-        if (!$query) {
-            throw new Exception("Prepare Failed: " . $mysqli->error);
-        }
-
-        $query->bind_param("sssi", $name, $author, $description, $this->id);
-        if (!$query->execute()) {
-            throw new Exception("Execute Failed: " . $query->error);
-        }
-
-        $this->name = $name;
-        $this->author = $author;
-        $this->description = $description;
-
-        return true;
-    }
-
-    //2- create() -> static function
-    public static function create(mysqli $mysqli, string $name, string $author, string $description, int $category_id): bool {
-        $sql = sprintf("Insert INTO %s (name, author, description, category_id) VALUES (?, ?, ?, ?)", static::$table);
-        $stmt = $mysqli->prepare($sql);
-
-        if (!$stmt) {
-            throw new Exception("Prepare Failed: " . $mysqli->error);
-        }
-
-        $stmt->bind_param("sssi", $name, $author, $description, $category_id);
-        if (!$stmt->execute()) {
-            throw new Exception("Execute Failed: " . $stmt->error);
-        }
-
-        return true;
-    }
     
     //get articles with specific category id 
     public static function getArticlesbyCategoryId(mysqli $mysqli, $id) {

@@ -43,7 +43,7 @@ class CategoryController extends BaseController {
         if(isset($data['name'], $data['description'])){
         $name = $data['name'];
         $description = $data['description'];
-        $category = Category::createcategory($this->mysqli,$name,$description);
+        $category = Category::create($this->mysqli,$name,$description);
         $this->respondSuccess($category);
         }} catch(Exception $e){
             $this->error($e->getMessage(), 500);
