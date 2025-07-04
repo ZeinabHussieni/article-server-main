@@ -38,21 +38,27 @@ class ArticleController extends BaseController {
 
     }
 
-    public function createArticle(){
-        //to fetch data from axois
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true); 
-        try{
-        if(isset($data['name'], $data['author'], $data['description'], $data['category_id'])){
-        $name = $data['name'];
-        $author = $data['author'];
-        $description = $data['description'];
-        $category_id = $data['category_id'];
-        $article = Article::create($this->mysqli,$name,$author,$description,$category_id);
-        $this->respondSuccess($article); }} catch(Exception $e){
-            $this->error($e->getMessage(), 500);
+   public function createArticle() {
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
+
+     try {
+        if (isset($data['name'], $data['author'], $data['description'], $data['category_id'])) {
+            $article = Article::create($this->mysqli, ['name' => $data['name'],
+                'author' => $data['author'],
+                'description' => $data['description'],
+                'category_id' => $data['category_id']
+            ]);
+
+            $this->respondSuccess($article);
+        } else {
+            $this->error("Missing required fields", 400);
         }
+        } catch (Exception $e) {
+        $this->error($e->getMessage(), 500);
+     }
     }
+
    
     public function DeleteArticle(){
  

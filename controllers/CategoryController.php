@@ -75,7 +75,7 @@ class CategoryController extends BaseController {
        $description = $data['description'];
        $category = new Category(['id' => $id,'name' => '', 'description' => '']);
 
-       $success = $category->update($this->mysqli, $name, $description, $id);
+       $success = $category->updatecategory($this->mysqli, $name, $description, $id);
        $this->respondSuccess($success);
         }} catch(Exception $e){
          $this->error($e->getMessage(), 500);

@@ -35,7 +35,7 @@ $apis = [
     '/update_article'         => ['controller' => 'ArticleController', 'method' => 'UpdateArticle'],
     '/create_article'         => ['controller' => 'ArticleController', 'method' => 'createArticle'],
     '/ArticlesOfCategoryId'    => ['controller' => 'ArticleController', 'method' => 'getArticlesOfCategoryId'],
-'/CategoryByArticleId' => ['controller' => 'ArticleController', 'method' => 'getCategoryByArticleId'],
+    '/CategoryByArticleId' => ['controller' => 'ArticleController', 'method' => 'getCategoryByArticleId'],
 
 
      
